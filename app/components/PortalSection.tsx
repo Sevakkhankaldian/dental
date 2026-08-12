@@ -20,6 +20,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+  { icon: "✦", label: "همه پرتال‌ها", count: "جدید", href: "/portals" },
   { icon: "⌂", label: "نمای کلی", href: "/" },
   { icon: "▤", label: "صندوق یکپارچه", count: "۵", href: "/inbox", section: "inbox" },
   { icon: "◫", label: "صف بررسی", count: "۱۲", href: "/reviews", section: "reviews" },

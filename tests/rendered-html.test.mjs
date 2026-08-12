@@ -32,11 +32,37 @@ test("server-renders the Persian clinician dashboard", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="fa"[^>]*dir="rtl"/i);
-  assert.match(html, /دنتامانیتور ایران \| پرتال کامل کلینیک/);
+  assert.match(html, /دنتامانیتور ایران \| اکوسیستم کامل پایش ارتودنسی/);
   assert.match(html, /پیشنهاد سامانه‌اند/);
   assert.match(html, /محیط نمایشی/);
   assert.match(html, /یافته‌های زیر خام و صرفاً برای بررسی افراد مجاز هستند/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
+});
+
+test("the product hub and every role-specific surface server-render independently", async () => {
+  const worker = await getWorker();
+  const routes = [
+    ["/portals", "پنج تجربه، یک زنجیره مراقبت امن"],
+    ["/patient/home", "خانه درمان"],
+    ["/clinic/decision-signoff", "تصمیم و امضای بالینی"],
+    ["/admin/model-registry", "رجیستری مدل"],
+    ["/annotation/image-workspace", "فضای برچسب‌گذاری تصویر"],
+    ["/engage/pre-screen", "نتیجه پیش‌غربالگری"],
+  ];
+
+  for (const [path, expected] of routes) {
+    const response = await worker.fetch(
+      new Request(`http://localhost${path}`, {
+        headers: { accept: "text/html", host: "localhost" },
+      }),
+      runtime,
+      execution,
+    );
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    assert.match(html, new RegExp(expected), path);
+    assert.match(html, /داده کاملاً ساختگی|کنش‌ها در این نمونه فقط نمایشی‌اند/, path);
+  }
 });
 
 test("health endpoint returns a correlated, non-cacheable foundation response", async () => {
