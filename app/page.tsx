@@ -88,14 +88,14 @@ const queueItems: QueueItem[] = [
 ];
 
 const navItems = [
-  ["⌂", "نمای کلی", ""],
-  ["▤", "صندوق یکپارچه", "۵"],
-  ["◫", "صف بررسی", "۱۲"],
-  ["◎", "بیماران", ""],
-  ["◌", "پیام‌ها", "۳"],
-  ["□", "نوبت‌ها", ""],
-  ["◇", "پروتکل‌ها", ""],
-  ["⌁", "گزارش‌ها", ""],
+  ["⌂", "نمای کلی", "", "/"],
+  ["▤", "صندوق یکپارچه", "۵", "/inbox"],
+  ["◫", "صف بررسی", "۱۲", "/reviews"],
+  ["◎", "بیماران", "", "/patients"],
+  ["◌", "پیام‌ها", "۳", "/messages"],
+  ["□", "نوبت‌ها", "", "/appointments"],
+  ["◇", "پروتکل‌ها", "", "/protocols"],
+  ["⌁", "گزارش‌ها", "", "/analytics"],
 ];
 
 const faNumber = (value: number | string) =>
@@ -188,14 +188,14 @@ export default function Home() {
 
         <nav>
           <p className="nav-label">فضای کاری</p>
-          {navItems.map(([icon, label, count], index) => (
+          {navItems.map(([icon, label, count, path], index) => (
             <button
               className={`nav-item ${index === 0 ? "active" : ""}`}
               key={label}
               type="button"
               onClick={() => {
                 setMenuOpen(false);
-                if (index !== 0) showToast(`بخش «${label}» در برش بعدی فعال می‌شود.`);
+                if (index !== 0) window.location.assign(path);
               }}
             >
               <span className="nav-icon" aria-hidden="true">{icon}</span>

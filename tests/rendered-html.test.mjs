@@ -32,7 +32,7 @@ test("server-renders the Persian clinician dashboard", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="fa"[^>]*dir="rtl"/i);
-  assert.match(html, /دنتامانیتور ایران \| داشبورد کلینیک/);
+  assert.match(html, /دنتامانیتور ایران \| پرتال کامل کلینیک/);
   assert.match(html, /پیشنهاد سامانه‌اند/);
   assert.match(html, /محیط نمایشی/);
   assert.match(html, /یافته‌های زیر خام و صرفاً برای بررسی افراد مجاز هستند/);
@@ -56,4 +56,31 @@ test("health endpoint returns a correlated, non-cacheable foundation response", 
   assert.equal(body.status, "ok");
   assert.equal(body.request_id, "req-contract-001");
   assert.equal(body.dependencies.database, "NOT_CONFIGURED");
+});
+
+test("all clinic portal sections render as independent Persian routes", async () => {
+  const worker = await getWorker();
+  const sections = [
+    ["/inbox", "صندوق یکپارچه"],
+    ["/reviews", "صف بررسی هوشمند"],
+    ["/patients", "مدیریت بیماران"],
+    ["/messages", "پیام‌های کلینیک"],
+    ["/appointments", "نوبت‌ها و درخواست‌ها"],
+    ["/protocols", "پروتکل‌های پایش"],
+    ["/analytics", "گزارش‌ها و تحلیل‌ها"],
+  ];
+
+  for (const [path, expectedTitle] of sections) {
+    const response = await worker.fetch(
+      new Request(`http://localhost${path}`, {
+        headers: { accept: "text/html", host: "localhost" },
+      }),
+      runtime,
+      execution,
+    );
+    assert.equal(response.status, 200, path);
+    const html = await response.text();
+    assert.match(html, new RegExp(expectedTitle), path);
+    assert.match(html, /محیط نمایشی · داده کاملاً ساختگی/, path);
+  }
 });

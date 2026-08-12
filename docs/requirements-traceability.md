@@ -9,6 +9,14 @@ This register tracks implemented evidence against `DENTAMONITOR_IRAN_MASTER_BUIL
 | `NFR-009` Instruction traceability | Partial | Review prototype requires explicit simulated sign-off; no patient delivery exists | UI render assertion only |
 | `PR-CLIN-002` Finding review states | Prototype | Doctor drawer supports accept/edit/reject/inconclusive using synthetic data | UI render assertion only |
 | `PR-CLIN-003` Raw AI hidden from patients | Prototype | Doctor-only wording and safety banner; no patient surface exists | UI copy assertion |
+| `DOC-02` Doctor dashboard | Prototype | Responsive overview with attention, workload, SLA and synthetic queue | Route render test |
+| `DOC-03` Unified inbox | Prototype | `/inbox` combines urgent reports, reviews, messages, appointments and tasks | Multi-route render test |
+| `DOC-04` Smart review queue | Prototype | `/reviews` includes search, quality, priority, evidence mock and sign-off state | Multi-route render test |
+| `DOC-05/07` Patient directory/overview | Prototype | `/patients` supports local search, treatment filter, synthetic creation and overview | Multi-route render test |
+| `DOC-18` Messages | Prototype | `/messages` includes threads, approved template examples and PHI-minimized notice | Multi-route render test |
+| `DOC-19` Appointments/calendar | Prototype | `/appointments` includes Jalali week view, resources and request handling | Multi-route render test |
+| `DOC-21/22` Protocol library/builder | Prototype | `/protocols` includes versions, simulation, maker-checker copy and safety gate | Multi-route render test |
+| `DOC-24` Analytics | Prototype | `/analytics` includes operational/clinical metrics and semantic definitions | Multi-route render test |
 | `PR-CLIN-007` Treatment states | Not started | — | — |
 | `AC-FND-01` Cross-tenant denial | Foundation | Pure tenant boundary and PostgreSQL tenant-scoped schema | `packages/domain/test/tenant-context.test.ts` |
 | `AC-FND-02` Patient/guardian subset | Not started | — | — |
@@ -22,7 +30,7 @@ This register tracks implemented evidence against `DENTAMONITOR_IRAN_MASTER_BUIL
 
 ## Release caveats
 
-- The clinician interface is a functional interaction prototype over deterministic in-memory demo data. It is not connected to clinical records.
+- The complete primary-navigation clinician interface is a functional interaction prototype over deterministic in-memory demo data. It is not connected to clinical records.
 - The AI label is `DM-MOCK-QUALITY v0.1`, shadow-only, with zero clinical claims.
 - Staff authentication, care-team ABAC, patient/guardian access, durable audit signing, and PostgreSQL integration remain release blockers.
 - No patient-facing clinical action or external notification is enabled.

@@ -4,7 +4,8 @@ Foundation and clinician-web preview for a Persian-first, multi-tenant orthodont
 
 ## Current scope
 
-- Responsive Persian RTL clinician dashboard with a synthetic review workflow.
+- Responsive Persian RTL clinician dashboard plus independent inbox, review queue, patients, messages, appointments, protocols and analytics routes.
+- Functional synthetic interactions for local patient creation, message drafting, appointment handling, protocol simulation and clinician sign-off.
 - Explicit human sign-off flow; no patient receives raw or unsigned AI output.
 - Framework-independent `TenantContext` boundary with negative isolation tests.
 - Append-only audit event model with PHI-key safeguards.
