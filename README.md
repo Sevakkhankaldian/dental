@@ -1,12 +1,15 @@
 # DentaMonitor Iran
 
-Full product-experience preview and security foundation for a Persian-first, multi-tenant orthodontic remote-monitoring platform. The normative product and engineering baseline is `DENTAMONITOR_IRAN_MASTER_BUILD_SPEC.md` v1.0.0.
+Full multi-surface product preview and security foundation for a Persian-first, multi-tenant orthodontic remote-monitoring platform. The normative product and engineering baseline is `DENTAMONITOR_IRAN_MASTER_BUILD_SPEC.md` v1.0.0.
 
 ## Current scope
 
-- Product hub at `/portals` connecting five role-specific experiences.
+- Public marketing website at `/`, separated from authenticated product experiences.
+- Role access center at `/portals` connecting four independent web dashboards.
+- Shared application entry at `/app`, asking patient or doctor before presenting the role-specific login and mobile experience.
 - All 28 patient-app flows (`PAT-01` through `PAT-28`) as independent responsive routes under `/patient/*`.
-- All 32 doctor/clinic modules (`DOC-01` through `DOC-32`) under `/clinic/*`, including scan viewers, human review and sign-off, protocols, operations and governance.
+- Fourteen dedicated doctor workflows under `/doctor/*`, separated from clinic operations.
+- All 32 clinic modules (`DOC-01` through `DOC-32`) under `/clinic/*`, including team operations, review governance, protocols and management.
 - All 16 platform-admin/MLOps consoles (`ADM-01` through `ADM-16`) under `/admin/*`.
 - All 10 annotation/data workspaces (`ANN-01` through `ANN-10`) under `/annotation/*`.
 - Seven public Engage steps under `/engage/*`, explicitly labeled non-diagnostic and separated from a clinical relationship.

@@ -10,6 +10,8 @@ This register tracks implemented evidence against `DENTAMONITOR_IRAN_MASTER_BUIL
 | `PR-CLIN-002` Finding review states | Prototype | Doctor drawer supports accept/edit/reject/inconclusive using synthetic data | UI render assertion only |
 | `PR-CLIN-003` Raw AI hidden from patients | Prototype | Patient surfaces expose only signed instruction language; raw proposal and uncertainty live in authorized clinic views | UI copy and route assertions |
 | `PAT-01..28` Patient application | Prototype | Complete data-driven route inventory under `/patient/*`, mobile presentation and safety controls | Exact count, unique routes and representative render test |
+| Role-oriented product architecture | Prototype | Public marketing site at `/`; independent patient, doctor, clinic and platform dashboards; shared role gateway at `/app` | Root, dashboard and shared-app render tests |
+| Doctor/clinic responsibility separation | Prototype | Fourteen personal doctor workflows under `/doctor/*`; team and business operations remain under `/clinic/*` | Exact count, unique routes and representative doctor render test |
 | `DOC-02` Doctor dashboard | Prototype | Responsive overview with attention, workload, SLA and synthetic queue | Route render test |
 | `DOC-03` Unified inbox | Prototype | `/inbox` combines urgent reports, reviews, messages, appointments and tasks | Multi-route render test |
 | `DOC-04` Smart review queue | Prototype | `/reviews` includes search, quality, priority, evidence mock and sign-off state | Multi-route render test |

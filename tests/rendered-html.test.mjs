@@ -19,7 +19,7 @@ const execution = {
   passThroughOnException() {},
 };
 
-test("server-renders the Persian clinician dashboard", async () => {
+test("server-renders the Persian public marketing website", async () => {
   const worker = await getWorker();
   const response = await worker.fetch(
     new Request("http://localhost/", { headers: { accept: "text/html", host: "localhost" } }),
@@ -32,18 +32,19 @@ test("server-renders the Persian clinician dashboard", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="fa"[^>]*dir="rtl"/i);
-  assert.match(html, /دنتامانیتور ایران \| اکوسیستم کامل پایش ارتودنسی/);
-  assert.match(html, /پیشنهاد سامانه‌اند/);
-  assert.match(html, /محیط نمایشی/);
-  assert.match(html, /یافته‌های زیر خام و صرفاً برای بررسی افراد مجاز هستند/);
+  assert.match(html, /دنتامانیتور ایران \| مراقبت پیوسته، تصمیم مطمئن/);
+  assert.match(html, /مراقبت ارتودنسی،/);
+  assert.match(html, /بین ویزیت‌ها هم ادامه دارد/);
+  assert.match(html, /پیشنهاد هوشمند؛ تصمیم انسانی/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
 });
 
 test("the product hub and every role-specific surface server-render independently", async () => {
   const worker = await getWorker();
   const routes = [
-    ["/portals", "پنج تجربه، یک زنجیره مراقبت امن"],
+    ["/portals", "از کدام بخش وارد می‌شوید؟"],
     ["/patient/home", "خانه درمان"],
+    ["/doctor/today", "امروز من"],
     ["/clinic/decision-signoff", "تصمیم و امضای بالینی"],
     ["/admin/model-registry", "رجیستری مدل"],
     ["/annotation/image-workspace", "فضای برچسب‌گذاری تصویر"],
@@ -61,8 +62,22 @@ test("the product hub and every role-specific surface server-render independentl
     assert.equal(response.status, 200, path);
     const html = await response.text();
     assert.match(html, new RegExp(expected), path);
-    assert.match(html, /داده کاملاً ساختگی|کنش‌ها در این نمونه فقط نمایشی‌اند/, path);
+    assert.match(html, /این نسخه نمایشی|داده کاملاً ساختگی|کنش‌ها در این نمونه فقط نمایشی‌اند/, path);
   }
+});
+
+test("the shared application asks for a patient or doctor role", async () => {
+  const worker = await getWorker();
+  const response = await worker.fetch(
+    new Request("http://localhost/app", { headers: { accept: "text/html", host: "localhost" } }),
+    runtime,
+    execution,
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /بیمار هستم/);
+  assert.match(html, /پزشک هستم/);
+  assert.match(html, /یک نقطه ورود، دو تجربه کاملاً متفاوت/);
 });
 
 test("health endpoint returns a correlated, non-cacheable foundation response", async () => {

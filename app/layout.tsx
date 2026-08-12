@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
 
-const title = "دنتامانیتور ایران | اکوسیستم کامل پایش ارتودنسی";
-const description = "اپ بیمار، پرتال پزشک و کلینیک، مدیریت پلتفرم و MLOps، Annotation و Engage در یک زنجیره مراقبت امن";
+const title = "دنتامانیتور ایران | مراقبت پیوسته، تصمیم مطمئن";
+const description = "پلتفرم پایش ارتودنسی با سایت معرفی، داشبوردهای مستقل بیمار، پزشک، کلینیک و ادمین و اپلیکیشن مشترک نقش‌محور";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -31,10 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "fa_IR",
       images: [
         {
-          url: `${origin}/og-v3.png`,
+          url: `${origin}/og-v4.png`,
           width: 1200,
           height: 630,
-          alt: "اکوسیستم دنتامانیتور ایران — از بیمار تا تصمیم پزشک و عملیات ایمن مدل",
+          alt: "دنتامانیتور ایران — داشبوردهای مستقل بیمار، پزشک، کلینیک و ادمین",
         },
       ],
     },
@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`${origin}/og-v3.png`],
+      images: [`${origin}/og-v4.png`],
     },
   };
 }

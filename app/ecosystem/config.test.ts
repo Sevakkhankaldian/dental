@@ -4,6 +4,7 @@ import { pagesBySurface, surfaceIds, surfaceMeta } from "./config";
 
 test("master specification surface counts are complete", () => {
   assert.equal(pagesBySurface.patient.length, 28);
+  assert.equal(pagesBySurface.doctor.length, 14);
   assert.equal(pagesBySurface.clinic.length, 32);
   assert.equal(pagesBySurface.admin.length, 16);
   assert.equal(pagesBySurface.annotation.length, 10);
