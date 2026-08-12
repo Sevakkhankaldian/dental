@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "fa_IR",
       images: [
         {
-          url: `${origin}/og-v4.png`,
+          url: `${origin}/og-v5.png`,
           width: 1200,
           height: 630,
           alt: "دنتامانیتور ایران — داشبوردهای مستقل بیمار، پزشک، کلینیک و ادمین",
@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`${origin}/og-v4.png`],
+      images: [`${origin}/og-v5.png`],
     },
   };
 }

@@ -1,69 +1,214 @@
-const roleCards = [
-  { icon: "◎", kicker: "برای بیمار", title: "درمان را بین ویزیت‌ها هم دنبال کن", copy: "اسکن هدایت‌شده، پیام مستقیم با کلینیک، نوبت‌ها و مسیر پیشرفت؛ همه در یک تجربه ساده و فارسی.", href: "/patient", action: "دیدن داشبورد بیمار", tone: "patient" },
-  { icon: "✦", kicker: "برای پزشک", title: "شواهد بیشتر، تصمیم بالینی در اختیار شما", copy: "صف شخصی بازبینی، مقایسه طولی، ثبت تصمیم و ارتباط با بیمار بدون گم‌شدن در کارهای کلینیک.", href: "/doctor", action: "دیدن داشبورد پزشک", tone: "doctor" },
-  { icon: "⌘", kicker: "برای کلینیک", title: "عملیات کلینیک را از یک مرکز اداره کن", copy: "تیم، بیماران، نوبت‌ها، SLA، پروتکل‌ها، گزارش‌ها و رشد کلینیک در یک فضای مدیریتی مستقل.", href: "/clinic", action: "دیدن داشبورد کلینیک", tone: "clinic" },
+const pillars = [
+  {
+    number: "01",
+    eyebrow: "کنترل بالینی",
+    title: "درمان را به‌جای تقویم، با نیاز بیمار هماهنگ کنید.",
+    copy: "اسکن‌های دوره‌ای، مقایسه طولی و صف اولویت‌دار کمک می‌کنند پزشک در زمان درست، شواهد درست را ببیند.",
+    href: "/doctor",
+    tone: "blue",
+  },
+  {
+    number: "02",
+    eyebrow: "تجربه بیمار",
+    title: "یک همراه ساده برای هر روز درمان.",
+    copy: "راهنمای ثبت اسکن، پیام‌های تأییدشده، یادآوری‌ها و نمایش پیشرفت، بیمار را بین ویزیت‌ها در مسیر نگه می‌دارد.",
+    href: "/patient",
+    tone: "aqua",
+  },
+  {
+    number: "03",
+    eyebrow: "عملیات و رشد",
+    title: "از صف بررسی تا عملکرد تیم؛ همه‌چیز در یک تصویر.",
+    copy: "کلینیک می‌تواند بار کاری، SLA، نوبت‌ها، پیام‌ها و شاخص‌های مراقبت را بدون ورود به فضای شخصی پزشک مدیریت کند.",
+    href: "/clinic",
+    tone: "mint",
+  },
 ];
 
 const journey = [
-  ["۱", "ثبت اسکن در خانه", "بیمار با راهنمای زنده، نماهای موردنیاز را ثبت و امن ارسال می‌کند."],
-  ["۲", "بررسی کیفیت و اولویت", "سامانه کیفیت را می‌سنجد و مورد را بدون تشخیص مستقیم برای پزشک آماده می‌کند."],
-  ["۳", "تصمیم پزشک", "پزشک شواهد را می‌بیند، پیشنهاد را تأیید یا اصلاح می‌کند و تصمیم را امضا می‌کند."],
-  ["۴", "اقدام روشن بیمار", "فقط دستور تأییدشده به بیمار می‌رسد و رویداد بعدی زمان‌بندی می‌شود."],
+  ["۱", "اسکن هدایت‌شده", "بیمار با راهنمای مرحله‌به‌مرحله پنج نمای استاندارد را ثبت می‌کند."],
+  ["۲", "کنترل کیفیت", "کیفیت تصاویر بررسی و پرونده برای بازبینی پزشک آماده می‌شود."],
+  ["۳", "بازبینی پزشک", "پزشک مقایسه‌ها را می‌بیند، تصمیم می‌گیرد و نتیجه را امضا می‌کند."],
+  ["۴", "اقدام روشن", "پیام تأییدشده و زمان اقدام بعدی به بیمار و کلینیک می‌رسد."],
+];
+
+const solutions = [
+  ["DM", "پایش درمان", "ثبت اسکن، مقایسه طولی و بازبینی بالینی", "/doctor/review-queue"],
+  ["EN", "جذب و پیش‌ارزیابی", "یک مسیر شفاف برای درخواست مشاوره و پیگیری سرنخ", "/engage"],
+  ["IN", "بینش کلینیک", "نمایش روندها، بار تیم و کیفیت عملیات", "/clinic/analytics"],
+  ["AI", "کنترل پلتفرم", "حاکمیت مدل، ممیزی و سلامت سرویس", "/admin"],
 ];
 
 export default function MarketingHome() {
   return (
-    <main className="marketing-site" dir="rtl">
-      <header className="marketing-nav">
-        <a href="/" className="marketing-brand"><span>د</span><div><strong>دنتامانیتور</strong><small>مراقبت پیوسته، تصمیم مطمئن</small></div></a>
-        <nav aria-label="ناوبری سایت معرفی">
-          <a href="#solution">راهکار</a><a href="#roles">برای چه کسانی؟</a><a href="#how">نحوه کار</a><a href="#safety">ایمنی</a><a href="/engage">درخواست مشاوره</a>
+    <main className="dmx-site" dir="rtl">
+      <a className="dmx-skip" href="#main-content">رفتن به محتوای اصلی</a>
+
+      <div className="dmx-announcement">
+        <p><span>نسخه نمایشی محصول</span> چهار تجربه مستقل برای بیمار، پزشک، کلینیک و مدیر پلتفرم</p>
+        <a href="/portals">مشاهده همه بخش‌ها <b>←</b></a>
+      </div>
+
+      <header className="dmx-header">
+        <a className="dmx-brand" href="/" aria-label="دنتامانیتور ایران، صفحه اصلی">
+          <span className="dmx-brand-mark"><i /><i /></span>
+          <span><strong>دنتامانیتور</strong><small>DENTAMONITOR IRAN</small></span>
+        </a>
+        <nav aria-label="ناوبری اصلی">
+          <a href="#platform">پلتفرم</a>
+          <a href="#solutions">راهکارها</a>
+          <a href="#journey">مسیر مراقبت</a>
+          <a href="#trust">ایمنی و اعتماد</a>
+          <a href="/engage">منابع</a>
         </nav>
-        <div className="marketing-actions"><a href="/app" className="text-link">ورود به اپ</a><a href="/portals" className="nav-cta">ورود به داشبورد</a></div>
+        <div className="dmx-header-actions">
+          <a className="dmx-login" href="/portals">ورود <span>⌄</span></a>
+          <a className="dmx-button dmx-button-small" href="/engage">درخواست دمو <span>←</span></a>
+        </div>
       </header>
 
-      <section className="marketing-hero" id="solution">
-        <div className="hero-copy">
-          <span className="hero-label"><i /> پلتفرم پایش هوشمند ارتودنسی</span>
-          <h1>مراقبت ارتودنسی،<br /><em>بین ویزیت‌ها هم ادامه دارد.</em></h1>
-          <p>دنتامانیتور بیمار، پزشک و کلینیک را در یک مسیر امن به هم متصل می‌کند؛ بیمار از خانه اسکن می‌گیرد، پزشک شواهد را بررسی می‌کند و کلینیک جریان مراقبت را منظم نگه می‌دارد.</p>
-          <div className="hero-actions"><a className="marketing-primary" href="/app">تجربه اپلیکیشن <span>←</span></a><a className="marketing-secondary" href="#how"><span>▷</span> ببین چطور کار می‌کند</a></div>
-          <div className="hero-proof"><span><b>۲۴/۷</b><small>ارتباط با مسیر درمان</small></span><span><b>۵ نما</b><small>اسکن هدایت‌شده</small></span><span><b>۱۰۰٪</b><small>تصمیم نهایی با پزشک</small></span></div>
-        </div>
-        <div className="hero-product" aria-label="پیش‌نمایش محصول دنتامانیتور">
-          <div className="hero-glow" />
-          <div className="hero-dashboard-card">
-            <header><span className="mini-logo">د</span><div><strong>مرکز بررسی پزشک</strong><small>امروز، ۲۱ مرداد</small></div><i>ن‌ن</i></header>
-            <div className="hero-dash-body"><aside><span className="active">⌂</span><span>◫</span><span>◎</span><span>◌</span><span>⌁</span></aside><section><div className="hero-dash-title"><span><small>صبح بخیر دکتر نادری</small><strong>۳ مورد به توجه شما نیاز دارد</strong></span><b>شروع بررسی</b></div><div className="hero-mini-metrics"><i><b>۱۲</b><small>اسکن تازه</small></i><i><b>۳</b><small>فوری</small></i><i><b>۱۸د</b><small>میانگین انتظار</small></i></div><div className="hero-patient-row"><em>س‌م</em><span><strong>سارا محمدی</strong><small>الاینر · مرحله ۱۴</small></span><b>نیازمند بررسی</b><i>←</i></div><div className="hero-patient-row"><em>ا‌ر</em><span><strong>امیررضا رضایی</strong><small>براکت · ماه ۸</small></span><b className="red">فوری</b><i>←</i></div></section></div>
+      <section className="dmx-hero" id="main-content">
+        <div className="dmx-hero-noise" />
+        <div className="dmx-hero-copy">
+          <div className="dmx-kicker"><i /> پلتفرم یکپارچه پایش ارتودنسی</div>
+          <h1>مراقبت هوشمند،<br /><em>فراتر از صندلی درمان.</em></h1>
+          <p>بیمار، پزشک و تیم کلینیک را در یک مسیر پیوسته به هم متصل کنید؛ از اسکن خانگی تا تصمیم بالینی و اقدام بعدی.</p>
+          <div className="dmx-hero-actions">
+            <a className="dmx-button" href="/portals">کشف تجربه محصول <span>←</span></a>
+            <a className="dmx-ghost-button" href="#journey"><i>▶</i> ببینید چطور کار می‌کند</a>
           </div>
-          <div className="hero-phone-card"><div className="phone-cut" /><header><span>۹:۴۱</span><span>● 5G ▰</span></header><div className="phone-logo">د</div><small>سلام سارا</small><h3>وقت اسکن امروز است</h3><div className="scan-orb"><span>◉</span><b>آماده ثبت</b><small>حدود ۳ دقیقه</small></div><button>شروع اسکن</button><footer><span>⌂<small>خانه</small></span><span>◷<small>اسکن</small></span><span>◌<small>پیام</small></span></footer></div>
-          <div className="floating-safety"><span>✓</span><div><strong>تصمیم پزشک ثبت شد</strong><small>فقط محتوای تأییدشده برای بیمار</small></div></div>
+          <div className="dmx-hero-note"><span>✓</span><p><strong>هوش مصنوعی در نقش دستیار</strong> تصمیم نهایی و انتشار پیام بالینی همیشه با پزشک است.</p></div>
+        </div>
+
+        <div className="dmx-hero-stage" aria-label="پیش‌نمایش داشبورد پزشک و اپ بیمار">
+          <div className="dmx-orbit dmx-orbit-one" />
+          <div className="dmx-orbit dmx-orbit-two" />
+          <div className="dmx-dashboard">
+            <div className="dmx-dash-top">
+              <div><span className="dmx-mini-mark">د</span><strong>مرکز کنترل بالینی</strong></div>
+              <div className="dmx-window-dots"><i /><i /><i /></div>
+            </div>
+            <div className="dmx-dash-layout">
+              <aside><b>د</b><span className="active">⌂</span><span>◫</span><span>◎</span><span>◌</span><span>⌁</span></aside>
+              <section>
+                <div className="dmx-dash-welcome"><div><small>صبح بخیر، دکتر نادری</small><h3>مرکز بررسی امروز</h3></div><button>شروع بررسی</button></div>
+                <div className="dmx-dash-stats"><article><span>اسکن تازه</span><strong>۱۲</strong><i className="good">+۳ امروز</i></article><article><span>نیازمند توجه</span><strong>۰۳</strong><i>اولویت بالا</i></article><article><span>زمان پاسخ</span><strong>۱۸<small>دقیقه</small></strong><i className="good">در محدوده هدف</i></article></div>
+                <div className="dmx-queue-head"><div><strong>صف بازبینی</strong><small>مرتب‌شده بر اساس اولویت</small></div><span>مشاهده همه</span></div>
+                <div className="dmx-queue-row urgent"><b>س‌م</b><span><strong>سارا محمدی</strong><small>الاینر · مرحله ۱۴</small></span><p>حرکت دندان ۱۲ نیازمند بررسی</p><i>فوری</i><em>←</em></div>
+                <div className="dmx-queue-row"><b>ا‌ر</b><span><strong>امیررضا رضایی</strong><small>براکت · ماه ۸</small></span><p>اسکن دوره‌ای دریافت شد</p><i>امروز</i><em>←</em></div>
+                <div className="dmx-queue-row"><b>ن‌ک</b><span><strong>نیلا کریمی</strong><small>ریتینر · ماه ۲</small></span><p>کیفیت اسکن تأیید شد</p><i className="calm">عادی</i><em>←</em></div>
+              </section>
+            </div>
+          </div>
+
+          <div className="dmx-phone">
+            <div className="dmx-phone-cut" />
+            <header><span>۹:۴۱</span><span>● 5G ▰</span></header>
+            <div className="dmx-phone-brand"><b>د</b><span>دنتامانیتور</span><i>•••</i></div>
+            <div className="dmx-phone-copy"><small>سلام سارا،</small><h3>امروز وقت اسکن است.</h3><p>با یک اسکن سه‌دقیقه‌ای مسیر درمانت را به‌روز نگه دار.</p></div>
+            <div className="dmx-scan-card"><div className="dmx-scan-ring"><span>◉</span></div><strong>آماده ثبت</strong><small>۵ نما · حدود ۳ دقیقه</small><button>شروع اسکن <span>←</span></button></div>
+            <footer><span className="active">⌂<small>خانه</small></span><span>◉<small>اسکن</small></span><span>◌<small>پیام‌ها</small></span></footer>
+          </div>
+
+          <div className="dmx-float-card dmx-float-ai"><span>AI</span><p><strong>پرونده آماده بررسی است</strong><small>کیفیت هر ۵ نما تأیید شد</small></p><i>✓</i></div>
+          <div className="dmx-float-card dmx-float-care"><span>ن‌ن</span><p><strong>دکتر نادری</strong><small>پیام جدید برای بیمار</small></p><i>←</i></div>
         </div>
       </section>
 
-      <section className="marketing-trust"><span>یک مسیر مشترک برای</span><div><b>بیمار</b><i /> <b>پزشک</b><i /> <b>کلینیک</b><i /> <b>تیم عملیات</b></div><small>تمام داده‌های این دموی محصول ساختگی‌اند.</small></section>
-
-      <section className="marketing-section role-section" id="roles">
-        <div className="section-heading"><span>یک پلتفرم، تجربه‌های تخصصی</span><h2>هرکس دقیقاً همان چیزی را می‌بیند که نیاز دارد.</h2><p>پرتال‌های جدا، مرز مسئولیت‌ها را روشن می‌کنند و اجازه نمی‌دهند تجربه بیمار با ابزارهای پیچیده بالینی یا مدیریتی قاطی شود.</p></div>
-        <div className="marketing-role-grid">{roleCards.map((card) => <a href={card.href} className={`marketing-role role-${card.tone}`} key={card.title}><header><span>{card.icon}</span><small>{card.kicker}</small></header><h3>{card.title}</h3><p>{card.copy}</p><footer><b>{card.action}</b><span>←</span></footer></a>)}</div>
-        <a className="admin-callout" href="/admin"><span className="admin-callout-icon">◈</span><div><small>برای تیم پلتفرم</small><strong>سلامت سرویس، امنیت، ممیزی و چرخه مدل در یک کنسول مستقل</strong></div><b>دیدن داشبورد ادمین ←</b></a>
+      <section className="dmx-capability-strip" aria-label="توانمندی‌های اصلی">
+        <span>یک پلتفرم برای</span>
+        <div><b>پایش از راه دور</b><i /> <b>کنترل بالینی</b><i /> <b>تجربه بیمار</b><i /> <b>بهینه‌سازی کلینیک</b></div>
       </section>
 
-      <section className="marketing-section process-section" id="how">
-        <div className="process-visual"><div className="process-ring"><span>د</span><i className="r1">بیمار</i><i className="r2">پزشک</i><i className="r3">کلینیک</i></div><div className="process-message"><span>✓</span><p><strong>دستور امضاشده پزشک</strong>مرحله فعلی را تا اسکن بعدی ادامه دهید.</p></div></div>
-        <div><div className="section-heading align-start"><span>از اسکن تا اقدام</span><h2>چهار قدم روشن، بدون میان‌بُر بالینی.</h2><p>هوش مصنوعی به مرتب‌سازی و تحلیل کمک می‌کند، اما هیچ یافته خام یا تصمیم امضانشده مستقیماً به بیمار نمی‌رسد.</p></div><div className="journey-list">{journey.map(([number,title,copy]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></div>
+      <section className="dmx-section dmx-platform" id="platform">
+        <div className="dmx-section-intro">
+          <span>ارتودنسی هوشمند از اینجا شروع می‌شود</span>
+          <h2>یک تصویر کامل‌تر از درمان،<br />برای تصمیم‌های مطمئن‌تر.</h2>
+          <p>دنتامانیتور فاصله بین ویزیت‌ها را به بخشی فعال از مراقبت تبدیل می‌کند؛ هر نقش ابزار خودش را دارد و همه روی یک مسیر مشترک حرکت می‌کنند.</p>
+        </div>
+        <div className="dmx-pillar-grid">
+          {pillars.map((pillar) => (
+            <a className={`dmx-pillar dmx-pillar-${pillar.tone}`} href={pillar.href} key={pillar.number}>
+              <div className="dmx-pillar-top"><span>{pillar.number}</span><i>↗</i></div>
+              <small>{pillar.eyebrow}</small>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.copy}</p>
+              <div className="dmx-pillar-art"><i /><i /><i /><b>{pillar.number === "01" ? "بازبینی" : pillar.number === "02" ? "همراه درمان" : "نمای کلینیک"}</b></div>
+            </a>
+          ))}
+        </div>
       </section>
 
-      <section className="marketing-section app-promo">
-        <div className="app-copy"><span>یک اپ، دو تجربه</span><h2>اول بگو بیمار هستی یا پزشک؛ ادامه مسیر مخصوص توست.</h2><p>اپ مشترک دنتامانیتور در شروع نقش را می‌پرسد. بیمار وارد جریان اسکن و درمان می‌شود؛ پزشک صف بررسی، پیام‌ها و موارد فوری خود را می‌بیند.</p><div><a className="marketing-primary" href="/app">باز کردن اپ نمایشی ←</a><small>بدون نیاز به نصب · ورود کاملاً نمایشی</small></div></div>
-        <div className="role-choice-preview"><header><span>د</span><small>دنتامانیتور</small></header><h3>شما چطور از دنتامانیتور استفاده می‌کنید؟</h3><div><span><i>◎</i><b>بیمار هستم</b><small>اسکن و پیگیری درمان</small></span><span><i>✦</i><b>پزشک هستم</b><small>بررسی و تصمیم بالینی</small></span></div></div>
+      <section className="dmx-feature dmx-feature-clinical">
+        <div className="dmx-feature-copy">
+          <span>کنترل بالینی</span>
+          <h2>تغییرات را زودتر ببینید؛<br />تصمیم را خودتان بگیرید.</h2>
+          <p>نمای مقایسه‌ای، یافته‌های اولویت‌بندی‌شده و سابقه تصمیم‌ها، شواهد را منظم می‌کنند تا زمان پزشک صرف قضاوت بالینی شود.</p>
+          <ul><li><i>✓</i> مقایسه اسکن فعلی با خط مبنا</li><li><i>✓</i> صف شخصی براساس فوریت و زمان انتظار</li><li><i>✓</i> ثبت دلیل تصمیم و امضای دیجیتال</li></ul>
+          <a href="/doctor">تجربه داشبورد پزشک <b>←</b></a>
+        </div>
+        <div className="dmx-clinical-visual">
+          <div className="dmx-case-head"><span><b>س‌م</b><i><strong>سارا محمدی</strong><small>پرونده ۱۴۰۳-۰۲۸ · مرحله ۱۴</small></i></span><em>نیازمند بررسی</em></div>
+          <div className="dmx-compare"><article><span>اسکن فعلی</span><div className="dmx-mouth"><i /><i /><i /><i /><i /><i /><i /><i /></div><small>۲۱ مرداد ۱۴۰۵</small></article><article><span>اسکن قبلی</span><div className="dmx-mouth old"><i /><i /><i /><i /><i /><i /><i /><i /></div><small>۱۴ مرداد ۱۴۰۵</small></article></div>
+          <div className="dmx-finding"><span>!</span><p><small>پیشنهاد برای بازبینی</small><strong>حرکت دندان ۱۲ کمتر از مسیر مورد انتظار است.</strong></p><button>باز کردن پرونده ←</button></div>
+        </div>
       </section>
 
-      <section className="marketing-section safety-section" id="safety"><div className="section-heading"><span>طراحی‌شده برای اعتماد</span><h2>پیشنهاد هوشمند؛ تصمیم انسانی.</h2><p>مرز نقش‌ها، رضایت نسخه‌دار، ممیزی تغییرناپذیر و کنترل انتشار بالینی از ابتدا در طراحی محصول حضور دارند.</p></div><div className="safety-grid"><article><span>⌁</span><h3>قابل ردیابی</h3><p>هر تصمیم به کاربر، شواهد، نسخه و زمان مشخص متصل است.</p></article><article><span>◈</span><h3>حریم خصوصی نقش‌محور</h3><p>هر نقش فقط داده ضروری و مجاز برای همان هدف را می‌بیند.</p></article><article><span>✦</span><h3>تأیید بالینی</h3><p>خروجی خام AI هرگز جای تصمیم و امضای پزشک را نمی‌گیرد.</p></article><article><span>■</span><h3>توقف امن</h3><p>اتوماسیون بالینی تا عبور از گیت‌های اعتبارسنجی غیرفعال می‌ماند.</p></article></div></section>
+      <section className="dmx-numbers">
+        <div><span>۴</span><p><strong>تجربه تخصصی</strong><small>برای بیمار، پزشک، کلینیک و مدیر پلتفرم</small></p></div>
+        <div><span>۵</span><p><strong>نمای هدایت‌شده</strong><small>در یک جریان ساده ثبت اسکن</small></p></div>
+        <div><span>۱</span><p><strong>مسیر مشترک</strong><small>از ثبت شواهد تا اقدام تأییدشده</small></p></div>
+        <div><span>۲۴/۷</span><p><strong>دسترسی به مسیر درمان</strong><small>برای پیگیری، پیام و یادآوری</small></p></div>
+      </section>
 
-      <section className="marketing-cta"><span>آماده‌ای تجربهٔ کامل را ببینی؟</span><h2>از سایت معرفی وارد هر بخش محصول شو.</h2><div><a href="/portals" className="marketing-primary">مرکز ورود داشبوردها ←</a><a href="/engage" className="marketing-secondary">درخواست مشاوره</a></div></section>
+      <section className="dmx-section dmx-solutions" id="solutions">
+        <div className="dmx-section-intro dmx-intro-row"><div><span>راهکارهای یک پلتفرم هوشمند</span><h2>هر ابزار، درست در جای خودش.</h2></div><p>از نخستین درخواست مشاوره تا پایش درمان و تحلیل عملکرد؛ ماژول‌ها به‌هم متصل‌اند اما مرز مسئولیت‌ها شفاف می‌ماند.</p></div>
+        <div className="dmx-solution-grid">
+          {solutions.map(([code, title, copy, href], index) => (
+            <a href={href} className={`dmx-solution-card solution-${index + 1}`} key={code}>
+              <header><span>{code}</span><i>↗</i></header><div><small>راهکار {String(index + 1).padStart(2, "0")}</small><h3>{title}</h3><p>{copy}</p></div>
+            </a>
+          ))}
+        </div>
+      </section>
 
-      <footer className="marketing-footer"><div className="marketing-brand"><span>د</span><div><strong>دنتامانیتور ایران</strong><small>نمونه نمایشی پلتفرم پایش ارتودنسی</small></div></div><nav><a href="/patient">بیمار</a><a href="/doctor">پزشک</a><a href="/clinic">کلینیک</a><a href="/admin">ادمین</a><a href="/app">اپلیکیشن</a></nav><p>این نسخه یک نمونه محصول است، نه ابزار تشخیص یا سامانه بالینی آماده بهره‌برداری.</p></footer>
+      <section className="dmx-journey" id="journey">
+        <div className="dmx-journey-copy"><span>از خانه تا کلینیک</span><h2>چهار قدم روشن،<br />بدون میان‌بُر بالینی.</h2><p>هر رویداد قابل پیگیری است و بیمار فقط پیام یا دستور تأییدشده پزشک را دریافت می‌کند.</p><a href="/app">باز کردن اپ نمایشی <b>←</b></a></div>
+        <div className="dmx-journey-list">
+          {journey.map(([number, title, copy], index) => <article key={number}><span>{number}</span><div><small>مرحله {index + 1}</small><h3>{title}</h3><p>{copy}</p></div><i>←</i></article>)}
+        </div>
+      </section>
+
+      <section className="dmx-role-showcase">
+        <div className="dmx-role-copy"><span>یک اپلیکیشن، دو تجربه</span><h2>نقش خود را انتخاب کنید؛<br />محصول با شما هماهنگ می‌شود.</h2><p>بیمار وارد مسیر اسکن و درمان می‌شود و پزشک صف بازبینی، پیام‌ها و موارد فوری خود را می‌بیند.</p><div><a className="dmx-button" href="/app">تجربه اپلیکیشن <b>←</b></a><a href="/portals">همه داشبوردها</a></div></div>
+        <div className="dmx-role-device">
+          <div className="dmx-role-logo"><span className="dmx-brand-mark"><i /><i /></span><b>دنتامانیتور</b></div>
+          <small>خوش آمدید</small><h3>چطور از دنتامانیتور استفاده می‌کنید؟</h3>
+          <a href="/app"><span className="patient">◎</span><p><strong>بیمار هستم</strong><small>اسکن، پیام و پیگیری درمان</small></p><i>←</i></a>
+          <a href="/app"><span className="doctor">✦</span><p><strong>پزشک هستم</strong><small>بازبینی، تصمیم و ارتباط</small></p><i>←</i></a>
+          <p className="dmx-role-footnote">این ورود برای نمایش تجربه محصول است و اطلاعات واقعی دریافت نمی‌کند.</p>
+        </div>
+      </section>
+
+      <section className="dmx-trust" id="trust">
+        <div className="dmx-trust-orb"><span>✓</span><i className="t1">ممیزی</i><i className="t2">رضایت</i><i className="t3">دسترسی</i><i className="t4">امضا</i></div>
+        <div className="dmx-trust-copy"><span>اعتماد، بخشی از معماری محصول</span><h2>پیشنهاد هوشمند؛<br />تصمیم انسانی.</h2><p>کنترل دسترسی نقش‌محور، رضایت نسخه‌دار، ثبت رویدادها و توقف امن، از ابتدا در تجربه محصول دیده شده‌اند.</p><div className="dmx-trust-points"><article><b>01</b><span><strong>مرز روشن نقش‌ها</strong><small>هر کاربر فقط داده و ابزار ضروری برای مسئولیت خود را می‌بیند.</small></span></article><article><b>02</b><span><strong>خروجی قابل ردیابی</strong><small>تصمیم‌ها به شواهد، نسخه، زمان و کاربر مشخص متصل می‌شوند.</small></span></article><article><b>03</b><span><strong>انتشار پس از تأیید</strong><small>هیچ یافته خام یا تصمیم امضانشده مستقیماً به بیمار نمی‌رسد.</small></span></article></div></div>
+      </section>
+
+      <section className="dmx-final-cta">
+        <div><span>آماده کشف محصول هستید؟</span><h2>هر نقش، یک تجربه کامل.<br />همه در یک پلتفرم متصل.</h2></div>
+        <div><a className="dmx-button dmx-button-light" href="/portals">ورود به مرکز تجربه‌ها <b>←</b></a><a href="/engage">درخواست مشاوره</a></div>
+      </section>
+
+      <footer className="dmx-footer">
+        <div className="dmx-footer-top">
+          <div><a className="dmx-brand dmx-brand-footer" href="/"><span className="dmx-brand-mark"><i /><i /></span><span><strong>دنتامانیتور ایران</strong><small>DENTAMONITOR IRAN</small></span></a><p>یک نمونه نمایشی از پلتفرم متصل پایش ارتودنسی برای بازار ایران.</p></div>
+          <nav><strong>محصول</strong><a href="/patient">داشبورد بیمار</a><a href="/doctor">داشبورد پزشک</a><a href="/clinic">داشبورد کلینیک</a><a href="/admin">مدیریت پلتفرم</a></nav>
+          <nav><strong>تجربه‌ها</strong><a href="/app">اپلیکیشن مشترک</a><a href="/engage">درخواست مشاوره</a><a href="/annotation">فضای حاشیه‌نویسی</a><a href="/portals">مرکز ورود</a></nav>
+          <nav><strong>چارچوب</strong><a href="#trust">ایمنی</a><a href="#journey">نحوه کار</a><a href="#platform">معرفی پلتفرم</a><a href="#solutions">راهکارها</a></nav>
+        </div>
+        <div className="dmx-footer-bottom"><p>این وب‌سایت یک دموی محصول است و ابزار تشخیص، توصیه درمانی یا سامانه آماده بهره‌برداری بالینی نیست.</p><span>© ۱۴۰۵ دنتامانیتور ایران</span></div>
+      </footer>
     </main>
   );
 }

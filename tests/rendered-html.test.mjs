@@ -33,9 +33,11 @@ test("server-renders the Persian public marketing website", async () => {
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="fa"[^>]*dir="rtl"/i);
   assert.match(html, /دنتامانیتور ایران \| مراقبت پیوسته، تصمیم مطمئن/);
-  assert.match(html, /مراقبت ارتودنسی،/);
-  assert.match(html, /بین ویزیت‌ها هم ادامه دارد/);
-  assert.match(html, /پیشنهاد هوشمند؛ تصمیم انسانی/);
+  assert.match(html, /مراقبت هوشمند،/);
+  assert.match(html, /فراتر از صندلی درمان/);
+  assert.match(html, /فاصله بین ویزیت‌ها/);
+  assert.match(html, /پیشنهاد هوشمند/);
+  assert.match(html, /تصمیم انسانی/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Your site is taking shape/i);
 });
 
