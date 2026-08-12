@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { pagesBySurface, surfaceIds, surfaceMeta } from "./config";
 
 const highlights = {
@@ -14,10 +13,10 @@ export default function PortalHub() {
   return (
     <main className="ecosystem-hub" dir="rtl">
       <header className="hub-header">
-        <Link href="/" className="hub-brand" aria-label="بازگشت به پرتال کلینیک">
+        <a href="/" className="hub-brand" aria-label="بازگشت به پرتال کلینیک">
           <span className="hub-logo">د</span>
           <span><strong>دنتامانیتور ایران</strong><small>اکوسیستم یکپارچه پایش ارتودنسی</small></span>
-        </Link>
+        </a>
         <div className="hub-status"><i /> محیط نمایشی · داده کاملاً ساختگی</div>
       </header>
 
@@ -35,14 +34,14 @@ export default function PortalHub() {
         {surfaceIds.map((id, index) => {
           const meta = surfaceMeta[id];
           return (
-            <Link className={`surface-card surface-${id}`} href={`/${id}`} key={id} style={{ "--surface-accent": meta.accent } as React.CSSProperties}>
+            <a className={`surface-card surface-${id}`} href={`/${id}`} key={id} style={{ "--surface-accent": meta.accent } as React.CSSProperties}>
               <div className="surface-card-top"><span className="surface-number">۰{index + 1}</span><span className="surface-code">{meta.code}</span></div>
               <div className="surface-icon" aria-hidden="true">{["◎", "⌂", "⌘", "⬡", "✦"][index]}</div>
               <h2>{meta.title}</h2>
               <p>{meta.description}</p>
               <div className="surface-highlights">{highlights[id].map((item) => <span key={item}>{item}</span>)}</div>
               <footer><span>{meta.status}</span><b>ورود به پرتال ←</b></footer>
-            </Link>
+            </a>
           );
         })}
       </section>
@@ -50,7 +49,7 @@ export default function PortalHub() {
       <section className="hub-safety">
         <span>⌁</span>
         <div><strong>معماری ایمنی در تمام مسیرها جاری است</strong><p>کنترل دسترسی دامنه‌دار، رضایت نسخه‌دار، ممیزی append-only، عدم قطعیت، حق خودداری مدل و گیت امضای انسانی در تجربه محصول منعکس شده‌اند.</p></div>
-        <Link href="/clinic/decision-signoff">دیدن گیت تصمیم بالینی</Link>
+        <a href="/clinic/decision-signoff">دیدن گیت تصمیم بالینی</a>
       </section>
     </main>
   );
