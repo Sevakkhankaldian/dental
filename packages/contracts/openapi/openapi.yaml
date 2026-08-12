@@ -1,0 +1,46 @@
+openapi: 3.1.0
+info:
+  title: DentaMonitor Iran Foundation API
+  version: 0.1.0
+  description: Foundation contract only. Clinical APIs are not enabled in this slice.
+servers:
+  - url: /api/v1
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Report process health and dependency configuration state
+      responses:
+        "200":
+          description: Process is accepting requests
+          headers:
+            X-Request-Id:
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [status, service, environment, version, request_id, dependencies]
+      properties:
+        status: { type: string, const: ok }
+        service: { type: string }
+        environment: { type: string }
+        version: { type: string }
+        request_id: { type: string }
+        dependencies:
+          type: object
+          additionalProperties: false
+          required: [database, cache, object_storage, workflow]
+          properties:
+            database: { $ref: "#/components/schemas/DependencyState" }
+            cache: { $ref: "#/components/schemas/DependencyState" }
+            object_storage: { $ref: "#/components/schemas/DependencyState" }
+            workflow: { $ref: "#/components/schemas/DependencyState" }
+    DependencyState:
+      type: string
+      enum: [UP, DOWN, DEGRADED, NOT_CONFIGURED]
