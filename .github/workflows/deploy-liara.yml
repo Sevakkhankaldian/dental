@@ -1,0 +1,64 @@
+name: deploy-liara
+
+on:
+  workflow_run:
+    workflows: [foundation-ci]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: liara-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    env:
+      LIARA_API_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+      LIARA_WEB_APP: ${{ vars.LIARA_WEB_APP }}
+      LIARA_API_APP: ${{ vars.LIARA_API_APP }}
+      LIARA_BUILD_LOCATION: ${{ vars.LIARA_BUILD_LOCATION || 'iran' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+      - name: Validate deployment configuration
+        shell: bash
+        run: |
+          test -n "$LIARA_API_TOKEN"
+          test -n "$LIARA_WEB_APP"
+          test -n "$LIARA_API_APP"
+      - name: Deploy web image
+        run: >-
+          npx --yes @liara/cli@9.4.7 deploy
+          --app "$LIARA_WEB_APP"
+          --api-token "$LIARA_API_TOKEN"
+          --platform docker
+          --port 3000
+          --dockerfile Dockerfile.web
+          --build-location "$LIARA_BUILD_LOCATION"
+          --detach
+          --no-app-logs
+      - name: Deploy API image
+        run: >-
+          npx --yes @liara/cli@9.4.7 deploy
+          --app "$LIARA_API_APP"
+          --api-token "$LIARA_API_TOKEN"
+          --platform docker
+          --port 4000
+          --dockerfile Dockerfile.api
+          --build-location "$LIARA_BUILD_LOCATION"
+          --detach
+          --no-app-logs

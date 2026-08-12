@@ -16,8 +16,6 @@ services:
       retries: 12
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./packages/database/migrations/0001_foundation.sql:/docker-entrypoint-initdb.d/0001_foundation.sql:ro
-      - ./data/synthetic/seed-foundation.sql:/docker-entrypoint-initdb.d/0002_seed.sql:ro
 
   redis:
     image: redis:7-alpine

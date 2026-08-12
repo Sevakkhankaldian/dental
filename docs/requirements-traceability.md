@@ -5,7 +5,7 @@ This register tracks implemented evidence against `DENTAMONITOR_IRAN_MASTER_BUIL
 | Requirement | Status | Implementation evidence | Automated evidence |
 |---|---|---|---|
 | `NFR-006` RTL/LTR and web accessibility | Partial | Persian `lang`, RTL root, keyboard focus, responsive layouts for all five surfaces | Render assertions in `tests/rendered-html.test.mjs` |
-| `NFR-008` Tenant isolation | Foundation | `packages/domain/src/tenant-context.ts`; PostgreSQL tenant keys and RLS in migration `0001` | Cross-organization and cross-clinic negative tests |
+| `NFR-008` Tenant isolation | Foundation | `TenantContext`; tenant keys and RLS in migrations `0001/0002`; membership claims in authenticated sessions | Pure cross-organization/cross-clinic tests plus real PostgreSQL RLS denial through a non-owner role |
 | `NFR-009` Instruction traceability | Prototype | Review prototype requires explicit simulated sign-off; patient instruction screen exposes signer and acknowledgement | UI route and configuration assertions |
 | `PR-CLIN-002` Finding review states | Prototype | Doctor drawer supports accept/edit/reject/inconclusive using synthetic data | UI render assertion only |
 | `PR-CLIN-003` Raw AI hidden from patients | Prototype | Patient surfaces expose only signed instruction language; raw proposal and uncertainty live in authorized clinic views | UI copy and route assertions |
@@ -25,19 +25,23 @@ This register tracks implemented evidence against `DENTAMONITOR_IRAN_MASTER_BUIL
 | `ANN-01..10` Annotation application | Prototype | Complete route inventory under `/annotation/*`; image workspace, tools, structured finding and release controls | Exact count, unique routes and representative render test |
 | `PR-ENG-001/002` Engage separation and funnel | Prototype | Seven independent `/engage/*` steps; non-diagnostic copy and explicit clinical-boundary notice | Count, unique routes and pre-screen render test |
 | `PR-CLIN-007` Treatment states | Not started | — | — |
-| `AC-FND-01` Cross-tenant denial | Foundation | Pure tenant boundary and PostgreSQL tenant-scoped schema | `packages/domain/test/tenant-context.test.ts` |
+| `AC-FND-01` Cross-tenant denial | Implemented for foundation | Pure tenant boundary, PostgreSQL policies and tenant-scoped transaction helper | `packages/domain/test/tenant-context.test.ts`; `apps/api/test/database-rls.test.ts` |
 | `AC-FND-02` Patient/guardian subset | UI prototype | Guardian/dependent and patient privacy routes model delegated scope; domain enforcement not connected | Configuration test only |
-| `AC-FND-03` Correlated audit without PHI | Foundation | Append-only domain store, metadata denylist, append-only SQL trigger | Domain audit test |
+| `AC-FND-03` Correlated audit without PHI | Implemented for auth | Append-only trigger, metadata denylist, request IDs and serialized per-organization SHA-256 chain | Domain audit test; successful OTP/refresh smoke writes chained events |
 | `AC-FND-04` Persian/Jalali/UTC/English | Partial | Persian RTL and Jalali display shell; schema stores `timestamptz` | Render assertion; date conversion not yet tested |
-| Section 5.4 tenant columns | Foundation | `organization_id` and `clinic_id` present on scoped foundation tables | Migration review; database integration pending |
-| Section 6 identity/tenant tables | Foundation | Organizations, clinics, users, memberships migration and deterministic seed | Database integration pending |
-| Section 7.1 API conventions | Partial | `/api/v1/health`, `X-Request-Id`, no-store response and OpenAPI 3.1 contract | Build/render checks; route contract test pending |
-| Section 11.4 append-only audit | Foundation | Domain event + database mutation trigger | Domain audit test; PostgreSQL integration pending |
-| Section 18 synthetic seed | Partial | Deterministic foundation seed `20260812`; no patient records yet | Manual schema review |
+| Section 5.4 tenant columns | Foundation | `organization_id` and `clinic_id` on tenant-scoped identity, outbox and notification tables | Static migration assertions and real PostgreSQL RLS integration test |
+| Section 6 identity/tenant tables | Foundation + patient OTP | Organizations, clinics, users, memberships, OTP challenges, sessions and deterministic patient membership | Migration runner from empty PostgreSQL; OTP smoke flow |
+| Section 6.5 notifications | Adapter foundation | Vendor-neutral port and Firebase Admin adapter with fixed privacy-minimized templates | Typecheck/build; provider credential integration pending |
+| Section 7.1 API conventions | Foundation | NestJS `/api/v1`, strict bodies, RFC problem responses, `X-Request-Id`, no-store and OpenAPI 3.1 | API smoke and build tests |
+| Section 7.2 patient OTP | Implemented for invited patient | Kavenegar adapter, generic request, scrypt OTP, TTL/limits, membership exchange and refresh rotation | Crypto tests and full local smoke including replay rejection |
+| Section 11.4 append-only audit | Implemented for auth | Domain guard, SQL mutation trigger and hash-chained persistence | Domain test and successful auth smoke on PostgreSQL |
+| Section 18 synthetic seed | Foundation | Deterministic seed `20260812` includes staff and one synthetic patient; guarded to local/test | Seed executed on a clean migrated PostgreSQL database |
+| Section 16 CI/CD | Foundation | Locked pnpm CI, PostgreSQL/Redis service checks, two Docker images and gated Liara deploy workflow | Local build evidence; GitHub run pending first push/configuration |
 
 ## Release caveats
 
 - The full patient, clinician, admin/MLOps, annotation and Engage experience is a functional interaction prototype over deterministic in-memory demo data. It is not connected to clinical records.
 - The AI label is `DM-MOCK-QUALITY v0.1`, shadow-only, with zero clinical claims.
-- Staff authentication, care-team ABAC, patient/guardian access, durable audit signing, and PostgreSQL integration remain release blockers.
-- No patient-facing clinical action or external notification is enabled.
+- Staff OIDC/MFA, care-team and patient/guardian ABAC, consent, KMS-backed encryption and external audit anchoring remain release blockers.
+- Patient OTP/session persistence is real; dashboard/clinical repositories still use synthetic adapters and are not release-ready.
+- Firebase delivery exists only as an adapter. No notification outbox worker or patient-facing clinical notification is enabled.

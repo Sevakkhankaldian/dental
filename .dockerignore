@@ -1,0 +1,14 @@
+.git
+.github
+.next
+.open-next
+.wrangler
+dist
+dist-api
+node_modules
+coverage
+*.log
+.env
+.env.*
+!.env.example
+Documents
