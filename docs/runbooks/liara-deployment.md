@@ -36,6 +36,30 @@ console. Re-check the live prices and account balance immediately before
 creating resources. Start with the sizing above, monitor memory/CPU/connection
 pressure, and resize from evidence rather than guesswork.
 
+## Temporary test environment
+
+The first Liara environment is intentionally a low-cost test environment, not
+the production baseline above. Its current configuration is:
+
+- Web: Earth resources (512 MB), Base feature bundle.
+- API: Earth resources (512 MB), Base feature bundle.
+- PostgreSQL: Earth resources (512 MB), Base feature bundle, Pgvector enabled,
+  PostGIS disabled and public networking disabled.
+- Redis: Earth resources (512 MB), Base feature bundle and public networking
+  disabled.
+- All four services use the `dentamonitor-production` private network. The name
+  is retained for compatibility, but the resources must be treated as test-only
+  until the production sizing and controls are applied.
+
+For this environment only, the API uses `APP_ENV=test`, `SMS_PROVIDER=mock`,
+`OTP_FIXED_CODE=123456` and `FIREBASE_ENABLED=false`. Use synthetic identities
+only. Never enter real patient, clinician or clinic data, because Base database
+features do not provide the backup and retention controls required for clinical
+production. Before production use, remove the fixed OTP, enable real Kavenegar
+and Firebase credentials, rotate every application secret and database
+credential, upgrade resources/features to the production baseline, and complete
+the verification checklist below.
+
 ## Safe creation order
 
 1. Create the `dentamonitor-production` private network.
