@@ -28,19 +28,27 @@ jobs:
       LIARA_API_APP: ${{ vars.LIARA_API_APP }}
       LIARA_BUILD_LOCATION: ${{ vars.LIARA_BUILD_LOCATION || 'iran' }}
     steps:
+      - name: Check deployment configuration
+        id: config
+        shell: bash
+        run: |
+          if [[ -z "$LIARA_API_TOKEN" || -z "$LIARA_WEB_APP" || -z "$LIARA_API_APP" ]]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "## Liara deployment skipped" >> "$GITHUB_STEP_SUMMARY"
+            echo "Configure LIARA_API_TOKEN and the LIARA_WEB_APP / LIARA_API_APP repository variables to enable deployment." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v4
+        if: steps.config.outputs.ready == 'true'
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/setup-node@v4
+        if: steps.config.outputs.ready == 'true'
         with:
           node-version: 22.13.0
-      - name: Validate deployment configuration
-        shell: bash
-        run: |
-          test -n "$LIARA_API_TOKEN"
-          test -n "$LIARA_WEB_APP"
-          test -n "$LIARA_API_APP"
       - name: Deploy web image
+        if: steps.config.outputs.ready == 'true'
         run: >-
           npx --yes @liara/cli@9.4.7 deploy
           --app "$LIARA_WEB_APP"
@@ -52,6 +60,7 @@ jobs:
           --detach
           --no-app-logs
       - name: Deploy API image
+        if: steps.config.outputs.ready == 'true'
         run: >-
           npx --yes @liara/cli@9.4.7 deploy
           --app "$LIARA_API_APP"
