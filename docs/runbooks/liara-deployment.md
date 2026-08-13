@@ -2,12 +2,56 @@
 
 ## Topology
 
-Create two Liara Docker applications from the same GitHub repository:
+Create all production resources in the same Liara private network, named
+`dentamonitor-production`:
 
-- Web: `Dockerfile.web`, port `3000`, public hostname.
-- API: `Dockerfile.api`, port `4000`, public API hostname.
+- Web application: `dentamonitor-web`, Docker, `Dockerfile.web`, port `3000`,
+  public hostname.
+- API application: `dentamonitor-api`, Docker, `Dockerfile.api`, port `4000`,
+  public API hostname.
+- PostgreSQL: `dentamonitor-postgres`, version `16.x`, private network only.
+- Redis: `dentamonitor-redis`, version `8.x`, private network only.
 
-Create managed PostgreSQL 16 and Redis services in Liara and connect only the API application to their internal URLs. The web application must never receive database, Kavenegar or Firebase secrets.
+The API is the only application allowed to receive database, Redis, Kavenegar
+or Firebase credentials. Do not enable public networking for PostgreSQL or
+Redis. Do not attach a persistent disk to either application; patient media and
+3D artifacts belong in private S3-compatible object storage when the media
+module is enabled.
+
+## Initial production sizing
+
+The baseline launch sizing is:
+
+- Web: Earth resources (512 MB), Base feature bundle.
+- API: Mars resources (1 GB), Silver feature bundle. Silver is required for a
+  realistic remote Docker build window and production log retention.
+- PostgreSQL: Mars resources (1 GB), Gold feature bundle, daily/weekly/monthly
+  automated backup retention, and Pgvector enabled. Keep PostGIS disabled until
+  a reviewed feature requires it.
+- Redis: Earth resources (512 MB), Base feature bundle. Redis is a cache and
+  rate-limit store, not the system of record.
+
+Liara bills resources hourly and displays current monthly estimates in the
+console. Re-check the live prices and account balance immediately before
+creating resources. Start with the sizing above, monitor memory/CPU/connection
+pressure, and resize from evidence rather than guesswork.
+
+## Safe creation order
+
+1. Create the `dentamonitor-production` private network.
+2. Create PostgreSQL 16 in that network with public access disabled and
+   Pgvector enabled.
+3. Create Redis 8 in that network with public access disabled.
+4. Create the API Docker application in that network.
+5. Create the Web Docker application in that network.
+6. Configure the API environment using the private database/Redis connection
+   strings shown by Liara.
+7. Deploy API first and require `GET /api/v1/health/ready` to return `200`.
+8. Deploy Web, then set the final Web/API origins and redeploy both if needed.
+9. Enable zero-downtime deployment for both applications after the first
+   healthy release.
+10. Add custom domains and SSL only after the default `liara.run` endpoints are
+    healthy.
 
 ## Required GitHub configuration
 
@@ -22,6 +66,11 @@ Repository variables:
 - `LIARA_BUILD_LOCATION` (`iran` by default; change only for an approved residency decision)
 
 Protect the `production` GitHub Environment with required reviewers. The deploy workflow runs only after the `foundation-ci` workflow succeeds on `main`, or by an authorized manual dispatch.
+
+Generate the Liara API token in the Liara account security/API-token page and
+store it directly as the GitHub Actions secret. Never paste it into a commit,
+issue, log, chat or local `.env` file. The repository variables contain only
+application identifiers and are not secrets.
 
 ## Required API environment
 
@@ -53,6 +102,49 @@ FIREBASE_SERVICE_ACCOUNT_BASE64=<base64-service-account-json>
 ```
 
 Do not set `OTP_FIXED_CODE` in staging or production. Startup fails closed if mock OTP, a fixed OTP or local development secrets are detected.
+
+Recommended non-secret runtime tuning for the initial API plan:
+
+```text
+DATABASE_POOL_MAX=10
+ACCESS_TOKEN_TTL_SECONDS=600
+REFRESH_TOKEN_TTL_DAYS=30
+OTP_TTL_SECONDS=120
+OTP_MAX_ATTEMPTS=5
+LOG_LEVEL=info
+OTEL_SERVICE_NAME=dentamonitor-api
+```
+
+Keep `FIREBASE_ENABLED=false` until either `FIREBASE_PROJECT_ID` or
+`FIREBASE_SERVICE_ACCOUNT_BASE64` is configured. Production startup requires a
+real Kavenegar API key because mock and fixed OTP are deliberately rejected.
+
+## Domains and CORS
+
+For the first release, use the default endpoints:
+
+```text
+https://dentamonitor-web.liara.run
+https://dentamonitor-api.liara.run
+```
+
+If either identifier is unavailable, use the actual created identifiers
+consistently in Liara, GitHub variables and the environment values. When custom
+domains are added, update `PUBLIC_BASE_URL`, `API_BASE_URL`, `CORS_ORIGINS` and
+`JWT_ISSUER` together and redeploy the API. Never use `*` for production CORS.
+
+## Verification checklist
+
+- Both database public-network toggles remain off.
+- PostgreSQL automated backups are visible and a restore drill is scheduled.
+- API readiness returns `200`; database and Redis dependencies report ready.
+- Web serves over HTTPS and only calls the expected API origin.
+- An invalid origin is rejected by CORS.
+- OTP reaches a designated non-patient test number through Kavenegar.
+- Refresh-token rotation rejects replay of the prior token.
+- Firebase sends only privacy-minimized notification templates.
+- No secret appears in GitHub logs, Liara build logs or client bundles.
+- The previous approved Git commit is recorded before every production release.
 
 ## Release and rollback
 

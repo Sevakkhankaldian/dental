@@ -50,7 +50,7 @@ jobs:
       - name: Deploy web image
         if: steps.config.outputs.ready == 'true'
         run: >-
-          npx --yes @liara/cli@9.4.7 deploy
+          npx --yes @liara/cli@9.5.1 deploy
           --app "$LIARA_WEB_APP"
           --api-token "$LIARA_API_TOKEN"
           --platform docker
@@ -62,7 +62,7 @@ jobs:
       - name: Deploy API image
         if: steps.config.outputs.ready == 'true'
         run: >-
-          npx --yes @liara/cli@9.4.7 deploy
+          npx --yes @liara/cli@9.5.1 deploy
           --app "$LIARA_API_APP"
           --api-token "$LIARA_API_TOKEN"
           --platform docker
